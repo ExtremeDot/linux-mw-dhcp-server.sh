@@ -229,7 +229,7 @@ EOF
 clear
 echo " Select The First LAN CARD - DHCP SERVER"
 echo ""
-ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev'$WAN_NIC
+ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev $WAN_NIC
 echo " "
 echo " "
 SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev $WAN_NIC | head -1)"
