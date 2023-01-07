@@ -159,7 +159,7 @@ IPRNG1=""
 until [[ $IPRNG1 =~ ^((25[0-4]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ && $IPRNG1 -gt 2 && $IPRNG1 -lt 201 ]] ; do
 echo ""
 echo "Define a number between 3-200 ."
-read -rp "DHCP START IP: [Recommended = 10] " -e IPRNG1
+read -rp "DHCP START IP: " -e -i 10 IPRNG1
 done
 IPRNG2=""
 until [[ $IPRNG2 =~ ^((25[0-4]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ && $IPRNG2 -gt $IPRNG1 ]] ; do
@@ -172,7 +172,7 @@ END_IP_REC=254
 fi
 echo "Define +30 number from DHCP Starting IP."
 echo "It relates to how much clients will connect to your server."
-read -rp "DHCP END IP: [Recommended = $END_IP_REC ~ 254 ] " -e IPRNG2
+read -rp "DHCP END IP: [ $END_IP_REC ~ 254 ] " -e -i $END_IP_REC IPRNG2
 done
 
 cat <<EOF > /etc/dhcp/dhcpd.conf
