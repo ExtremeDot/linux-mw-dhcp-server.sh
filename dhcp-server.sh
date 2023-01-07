@@ -12,14 +12,48 @@ if ! isRoot; then
         echo "Sorry, you need to run this as root"
         exit 1
 fi
-
+clear
+echo ""
+echo "CHECKING REQUIRED APPS" 
+echo ""
 # check if DHCPD is installed
 status="$(dpkg-query -W --showformat='${db:Status-Status}' "isc-dhcp-server" 2>&1)"
 if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
 echo " - - - Installing DHCP Server"
 apt-get install -y isc-dhcp-server
 else
-echo " DHCP Server = OK"
+echo " DHCP Server = 		OK"
+fi
+status="$(dpkg-query -W --showformat='${db:Status-Status}' "bridge-utils" 2>&1)"
+if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
+echo " - - - Installing Bridging Tools"
+apt-get install -y bridge-utils
+else
+echo " Bridging Tool =          OK"
+fi
+
+status="$(dpkg-query -W --showformat='${db:Status-Status}' "network-manager" 2>&1)"
+if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
+echo " - - - Installing Network Manager"
+apt-get install -y network-manager
+else
+echo " Network Manager =        OK"
+fi
+
+status="$(dpkg-query -W --showformat='${db:Status-Status}' "iptables-persistent" 2>&1)"
+if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
+echo " - - - Installing IPTABLES Service"
+apt-get install -y iptables-persistent
+else
+echo " IP TABLE Tools =         OK"
+fi
+
+status="$(dpkg-query -W --showformat='${db:Status-Status}' "net-tools" 2>&1)"
+if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
+echo " - - - Installing Networking Tools"
+apt-get install -y net-tools
+else
+echo " Networking Tools =       OK"
 fi
 
 # SET BRIDGE INTERFACE CONFIGS
