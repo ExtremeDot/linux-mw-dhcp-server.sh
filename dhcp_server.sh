@@ -218,7 +218,7 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
   $BRG_NAME:
    dhcp4: no
    addresses:
-   - DHCP_IPV4_GW/24
+   - $DHCP_IPV4_GW/24
    interfaces:
    - $LAN1_NIC
 
@@ -259,7 +259,39 @@ EOF
     esac
 done
 
+# FINISHING
+netplan apply
+sleep 2
 
-       
+mkdir -p /ExtremeDOT
+touch /ExtremeDOT/dhcp_route.sh
+cat <<EOF > /ExtremeDOT/dhcp_route.sh
 
-   
+#!/bin/bash
+sysctl -w net.ipv4.ip_forward=1
+sysctl -p
+/usr/bin/systemctl start iptables
+sleep 3
+# need to be updated
+DEF_IPV4_ZERO=192.168.2.0
+DEF_IPV4_GW=192.168.2.1
+DEF_TABLE=900
+/sbin/route add $DHCP_IPV4_ZERO/24 dev $BRG_NAME table \$DEF_TABLE
+sleep 1
+/sbin/route add \$DEF_IPV4_ZERO/24 dev $WAN_NIC table \$DEF_TABLE
+sleep 1
+/sbin/route add default via \$DEF_IPV4_GW dev $WAN_NIC table \$DEF_TABLE
+sleep 2
+#/sbin/ip route show table \$DEF_TABLE
+/sbin/ip rule add iif $WAN_NIC lookup \$DEF_TABLE
+sleep 1
+/sbin/ip rule add iif $BRG_NAME lookup \$DEF_TABLE
+sleep 2
+#/sbin/ip rule | grep \$DEF_TABLE
+/sbin/iptables -t nat -A POSTROUTING -s \$DHCP_IPV4_ZERO/24 -o $WAN_NIC -j MASQUERADE
+
+EOF
+
+sleep 2
+chmod +x /ExtremeDOT/dhcp_route.sh
+sudo crontab -l | { cat; echo "@reboot sleep 10 && sudo bash /ExtremeDOT/dhcp_route.sh" ; } | crontab -
