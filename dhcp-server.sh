@@ -86,10 +86,8 @@ echo ""
         echo "   10) NextDNS (Anycast: worldwide)"
         #echo "   11) SKIP, No change"
 	echo "   11) Custom"
-	
         until [[ $DNS =~ ^[0-9]+$ ]] && [ "$DNS" -ge 1 ] && [ "$DNS" -le 11 ]; do
                 read -rp "DNS [1-11]: " -e -i 9 DNS
-                
                 if [[ $DNS == "11" ]]; then
                         until [[ $DNS1 =~ ^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ ]]; do
                                 read -rp "Primary DNS: " -e DNS1
@@ -107,7 +105,6 @@ echo ""
 DEST_RESOLV1=""
 DEST_RESOLV2=""
 case $DNS in
-        
         1) # Cloudflare
 		DEST_RESOLV1=1.1.1.1
 		DEST_RESOLV2=1.0.0.1
@@ -178,7 +175,6 @@ echo "It relates to how much clients will connect to your server."
 read -rp "DHCP END IP: [Recommended = $END_IP_REC ~ 254 ] " -e IPRNG2
 done
 
-        
 cat <<EOF > /etc/dhcp/dhcpd.conf
 
 subnet $DHCP_IPV4_ZERO netmask 255.255.255.0 {
@@ -210,7 +206,7 @@ network:
 
 EOF
 
-echo "" 
+echo ""
 echo " Setting The Network Plan"
 echo ""
 
@@ -228,7 +224,7 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
 # WAN INTERFACE
   $WAN_NIC:
    dhcp4: true
-   
+
 EOF
 
 echo " Select The First LAN CARD - DHCP SERVER"
