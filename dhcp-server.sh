@@ -72,6 +72,7 @@ DHCP_IPV4_GW=$(echo "${DHCP_IPV4}" | cut -d"." -f1-3)".1"
 
 # SET DNS FOR DHCP BRIDGE
 # get data to changing DNS Settings
+clear
 echo ""
         echo "What DNS resolvers do you want to use with the VPN?"
         echo "   1) Cloudflare (Anycast: worldwide)"
@@ -155,6 +156,7 @@ case $DNS in
 esac
 
 # DEFINE DHCP SERVER - CLIENTS STARTING IP:
+clear
 IPRNG1=""
 until [[ $IPRNG1 =~ ^((25[0-4]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$ && $IPRNG1 -gt 2 && $IPRNG1 -lt 201 ]] ; do
 echo ""
@@ -176,7 +178,6 @@ read -rp "DHCP END IP: [ $END_IP_REC ~ 254 ] " -e -i $END_IP_REC IPRNG2
 done
 
 cat <<EOF > /etc/dhcp/dhcpd.conf
-
 subnet $DHCP_IPV4_ZERO netmask 255.255.255.0 {
   range $DHCP_IPV4_BASE.$IPRNG1 $DHCP_IPV4_BASE.$IPRNG2;
   option domain-name-servers $DHCP_IPV4_GW,$DEST_RESOLV1,$DEST_RESOLV2;
@@ -191,13 +192,12 @@ subnet $DHCP_IPV4_ZERO netmask 255.255.255.0 {
 EOF
 
 cat <<EOF > /etc/default/isc-dhcp-server
-
 INTERFACESv4="$BRG_NAME"
 INTERFACESv6="$BRG_NAME"
 
 EOF
 
-cat <<EOF > /etc/netplan/01-netcfg.yaml
+cat << EOF > /etc/netplan/01-netcfg.yaml
 network:
  version: 2
  renderer: networkd
@@ -205,7 +205,7 @@ network:
  ethernets:
 
 EOF
-
+clear
 echo ""
 echo " Setting The Network Plan"
 echo ""
@@ -226,13 +226,13 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
    dhcp4: true
 
 EOF
-
+clear
 echo " Select The First LAN CARD - DHCP SERVER"
 echo ""
-ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC'
+ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev'$WAN_NIC
 echo " "
 echo " "
-SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC' | head -1)"
+SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev $WAN_NIC | head -1)"
         until [[ ${LAN1_NIC} =~ ^[a-zA-Z0-9_]+$ ]]; do
                 read -rp "[LAN1 INTERFACE]: Enter interface name: " -e -i "${SERVER_NIC}" LAN1_NIC
         done
@@ -260,10 +260,10 @@ while true; do
         [Yy]* )
                 echo " Select The Second LAN CARD - DHCP SERVER"
                 echo ""
-                ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC' | grep -Ev '$LAN1_NIC'
+                ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev $WAN_NIC | grep -Ev $LAN1_NIC
                 echo " "
                 echo " "
-                SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC' | grep -Ev '$LAN1_NIC' | head -1)"
+                SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev $WAN_NIC | grep -Ev $LAN1_NIC | head -1)"
                         until [[ ${LAN2_NIC} =~ ^[a-zA-Z0-9_]+$ ]]; do
                                 read -rp "[LAN2 INTERFACE]: Enter interface name: " -e -i "${SERVER_NIC}" LAN2_NIC
                         done
