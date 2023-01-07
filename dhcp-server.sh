@@ -1,5 +1,5 @@
 #!/bin/bash
-echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]
+echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
 
 # ROOT CONDITIONS
 function isRoot() {
@@ -31,13 +31,13 @@ BRG_NAME="${input:-$BRG_NAME}"
 until [[ ${DHCP_IPV4} =~ ^([0-9]{1,3}\.){3} ]]; do
                 read -rp "Define DHCP IP for $BRG_NAME: " -e -i 10.2.10.1 DHCP_IPV4
 done
+
 DHCP_IPV4_BASE=$(echo "${DHCP_IPV4}" | cut -d"." -f1-3)
 DHCP_IPV4_ZERO=$(echo "${DHCP_IPV4}" | cut -d"." -f1-3)".0"
 DHCP_IPV4_GW=$(echo "${DHCP_IPV4}" | cut -d"." -f1-3)".1"
 
 # SET DNS FOR DHCP BRIDGE
 # get data to changing DNS Settings
-echo "`sed -ne 's/^nameserver[[:space:]]\+\([^[:space:]]\+\).*$/\1/p' $RESOLVCONF`"
 echo ""
         echo "What DNS resolvers do you want to use with the VPN?"
         echo "   1) Cloudflare (Anycast: worldwide)"
@@ -51,7 +51,8 @@ echo ""
         echo "   9) AdGuard DNS (Anycast: worldwide)"
         echo "   10) NextDNS (Anycast: worldwide)"
         #echo "   11) SKIP, No change"
-	      echo "   11) Custom"
+	echo "   11) Custom"
+	
         until [[ $DNS =~ ^[0-9]+$ ]] && [ "$DNS" -ge 1 ] && [ "$DNS" -le 11 ]; do
                 read -rp "DNS [1-11]: " -e -i 9 DNS
                 
@@ -172,8 +173,8 @@ network:
  renderer: networkd
 
  ethernets:
- 
- EOF
+
+EOF
 
 echo "" 
 echo " Setting The Network Plan"
@@ -196,7 +197,7 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
    
 EOF
 
-echo " Select The First LAN CARD"
+echo " Select The First LAN CARD - DHCP SERVER"
 echo ""
 ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC'
 echo " "
@@ -221,15 +222,13 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
    - $DHCP_IPV4_GW/24
    interfaces:
    - $LAN1_NIC
-
-
 EOF
 
 while true; do
     read -rp "Do you want to another Lan NIC to Bridged DHCP server?[Yes or No]? :" -e -i "Yes"  yn
     case $yn in
         [Yy]* )
-                echo " Select The Second LAN CARD"
+                echo " Select The Second LAN CARD - DHCP SERVER"
                 echo ""
                 ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo' | grep -Ev '$WAN_NIC' | grep -Ev '$LAN1_NIC'
                 echo " "
@@ -238,8 +237,10 @@ while true; do
                         until [[ ${LAN2_NIC} =~ ^[a-zA-Z0-9_]+$ ]]; do
                                 read -rp "[LAN2 INTERFACE]: Enter interface name: " -e -i "${SERVER_NIC}" LAN2_NIC
                         done
+echo ""
+echo " Adding $LAN2_NIC to DHCP Server"
 cat <<EOF >> /etc/netplan/01-netcfg.yaml
-   - $LAN1_NIC
+   - $LAN2_NIC
 
 # LAN2 INTERFACE
   $LAN2_NIC:
@@ -265,8 +266,9 @@ sleep 2
 
 mkdir -p /ExtremeDOT
 touch /ExtremeDOT/dhcp_route.sh
+echo ""
+echo " Writing Default routing script"
 cat <<EOF > /ExtremeDOT/dhcp_route.sh
-
 #!/bin/bash
 sysctl -w net.ipv4.ip_forward=1
 sysctl -p
@@ -294,4 +296,8 @@ EOF
 
 sleep 2
 chmod +x /ExtremeDOT/dhcp_route.sh
+echo "/ExtremeDOT/dhcp_route.sh is saved to manual route"
+
+echo " Add routing to Startup"
+
 sudo crontab -l | { cat; echo "@reboot sleep 10 && sudo bash /ExtremeDOT/dhcp_route.sh" ; } | crontab -
