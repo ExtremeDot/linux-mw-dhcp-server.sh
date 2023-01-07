@@ -312,11 +312,11 @@ sleep 3
 DEF_IPV4_ZERO=192.168.2.0
 DEF_IPV4_GW=192.168.2.1
 DEF_TABLE=900
-/sbin/route add $DHCP_IPV4_ZERO/24 dev $BRG_NAME table \$DEF_TABLE
+/sbin/ip route add $DHCP_IPV4_ZERO/24 dev $BRG_NAME table \$DEF_TABLE
 sleep 1
-/sbin/route add \$DEF_IPV4_ZERO/24 dev $WAN_NIC table \$DEF_TABLE
+/sbin/ip route add \$DEF_IPV4_ZERO/24 dev $WAN_NIC table \$DEF_TABLE
 sleep 1
-/sbin/route add default via \$DEF_IPV4_GW dev $WAN_NIC table \$DEF_TABLE
+/sbin/ip route add default via \$DEF_IPV4_GW dev $WAN_NIC table \$DEF_TABLE
 sleep 2
 #/sbin/ip route show table \$DEF_TABLE
 /sbin/ip rule add iif $WAN_NIC lookup \$DEF_TABLE
@@ -324,7 +324,7 @@ sleep 1
 /sbin/ip rule add iif $BRG_NAME lookup \$DEF_TABLE
 sleep 2
 #/sbin/ip rule | grep \$DEF_TABLE
-/sbin/iptables -t nat -A POSTROUTING -s \$DHCP_IPV4_ZERO/24 -o $WAN_NIC -j MASQUERADE
+/sbin/iptables -t nat -A POSTROUTING -s $DHCP_IPV4_ZERO/24 -o $WAN_NIC -j MASQUERADE
 
 EOF
 
