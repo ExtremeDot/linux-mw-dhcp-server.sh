@@ -1,4 +1,8 @@
-# linux-mw-dhcp-server.sh
+curl -O https://raw.githubusercontent.com/ExtremeDot/ubuntu-dhcp-server/master/dhcp-server.sh && chmod +x dhcp-server.sh
+
+./dhcp-server.sh
+
+# D H C P  U B U N T U  
 It will run DHCP Server for NICs.
 
 /etc/dhcp/dhcpd.conf 
