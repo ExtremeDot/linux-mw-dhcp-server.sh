@@ -224,6 +224,7 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
 # WAN INTERFACE
   $WAN_NIC:
    dhcp4: true
+   optional: true
 
 EOF
 clear
@@ -242,12 +243,14 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
 # LAN1 INTERFACE
   $LAN1_NIC:
    dhcp4: no
+   optional: true
    addresses:
    - 10.41.40.1/24
 # BRIDGE
  bridges:
   $BRG_NAME:
    dhcp4: no
+   optional: true
    addresses:
    - $DHCP_IPV4_GW/24
    interfaces:
@@ -275,6 +278,7 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
 # LAN2 INTERFACE
   $LAN2_NIC:
    dhcp4: no
+   optional: true
    addresses:
    - 10.42.40.1/24
 
