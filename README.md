@@ -32,23 +32,23 @@ network:
 
  ethernets:
 
-# FISRT
+#- FISRT
   eno1:
    dhcp4: true
 
-# SECOND
+#- SECOND
   enp1s0:
    dhcp4: no
    addresses:
    - 10.11.70.2/24
    
-# THIRD
+#- THIRD
   enp3s0:
    dhcp4: no
    addresses:
    - 10.12.70.2/24
 
-# BRIDGE
+#- BRIDGE
  bridges:
   br0:
    interfaces:
