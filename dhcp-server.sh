@@ -22,7 +22,7 @@ if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
 echo " - - - Installing DHCP Server"
 apt-get install -y isc-dhcp-server
 else
-echo " DHCP Server = 		OK"
+echo " DHCP Server =            OK"
 fi
 status="$(dpkg-query -W --showformat='${db:Status-Status}' "bridge-utils" 2>&1)"
 if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
