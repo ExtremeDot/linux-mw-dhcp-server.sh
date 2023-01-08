@@ -246,19 +246,11 @@ cat <<EOF >> /etc/netplan/01-netcfg.yaml
    optional: true
    addresses:
    - 10.41.40.1/24
-# BRIDGE
- bridges:
-  $BRG_NAME:
-   dhcp4: no
-   optional: true
-   addresses:
-   - $DHCP_IPV4_GW/24
-   interfaces:
-   - $LAN1_NIC
+
 EOF
 
 while true; do
-    read -rp "Do you want to another Lan NIC to Bridged DHCP server?[Yes or No]? :" -e -i "Yes"  yn
+    read -rp "Do you want to add Second Lan NIC to Bridged DHCP server?[Yes or No]? :" -e -i "Yes"  yn
     case $yn in
         [Yy]* )
                 echo " Select The Second LAN CARD - DHCP SERVER"
@@ -273,21 +265,39 @@ while true; do
 echo ""
 echo " Adding $LAN2_NIC to DHCP Server"
 cat <<EOF >> /etc/netplan/01-netcfg.yaml
-   - $LAN2_NIC
-
 # LAN2 INTERFACE
   $LAN2_NIC:
    dhcp4: no
    optional: true
    addresses:
    - 10.42.40.1/24
-
+# BRIDGE
+ bridges:
+  $BRG_NAME:
+   dhcp4: no
+   optional: true
+   addresses:
+   - $DHCP_IPV4_GW/24
+   interfaces:
+   - $LAN1_NIC
+   - $LAN2_NIC
 EOF
 
                 break
                 ;;
         [Nn]* )
-                echo " Skipping add another LAN card"
+echo " Skipping add another LAN card"
+cat <<EOF >> /etc/netplan/01-netcfg.yaml
+# BRIDGE
+ bridges:
+  $BRG_NAME:
+   dhcp4: no
+   optional: true
+   addresses:
+   - $DHCP_IPV4_GW/24
+   interfaces:
+   - $LAN1_NIC
+EOF
                 break
                 ;;
         * ) echo "Please answer yes or no.";;
