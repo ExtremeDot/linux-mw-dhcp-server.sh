@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.23
+versionrr=1.24
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
 echo " MultiBalance VPN version"
 echo
@@ -574,10 +574,10 @@ VPN_TABLE=900
 VPNIP=`ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'`
 sleep 1
 VPNIP_GW=$(echo `ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'` | cut -d "." -f1-3).1
-VPNIP_NETWORK=$(echo `ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'` | cut -d "." -f1-3)>
-VPNIP_NETWORK=$(echo "$VPNIP" | cut -d"." -f1-3)".0/24"
+VPNIP_NETWORK=$(echo `ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'` | cut -d "." -f1-3)
+#VPNIP_NETWORK=$(echo "$VPNIP" | cut -d"." -f1-3)".0/24"
 BRIDGE_NAME=$BRG_NAME
-BRIDGE_NETWORK=$(echo "$DHCP_IPV4_GW" | cut -d"." -f1-3)".0/24"
+BRIDGE_NETWORK=$(echo "$DHCP_IPV4_GW" | cut -d"." -f1-3).0/24
 #BRIDGE_NETWORK="$DHCP_IPV4_GW/24"
 
 /sbin/ip route add \$BRIDGE_NETWORK dev \$BRIDGE_NAME table \$DEF_TABLE
