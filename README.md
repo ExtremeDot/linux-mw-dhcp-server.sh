@@ -1,5 +1,13 @@
 # D H C P  U B U N T U  
 
+CUstom Version for multibalance vpns
+```sh
+curl -O https://raw.githubusercontent.com/ExtremeDot/ubuntu-dhcp-server/master/dhcp-server-dot.sh && chmod +x dhcp-server-dot.sh
+
+./dhcp-server-dot.sh
+```
+
+***
 
 ```sh
 curl -O https://raw.githubusercontent.com/ExtremeDot/ubuntu-dhcp-server/master/dhcp-server.sh && chmod +x dhcp-server.sh
