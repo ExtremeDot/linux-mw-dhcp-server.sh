@@ -307,7 +307,7 @@ fi
 
 
 ##### WAN SELECT - LINUX2
-if [[ $VMACHINE == "1" ]]; then
+if [[ $VMACHINE == "2" ]]; then
 
 echo && echo " Setting The Network Plan"
 echo && echo " Select the Interface for [WAN] "
@@ -322,7 +322,7 @@ SERVER_NIC="ens33"
 fi
 
 ##### WAN SELECT - LINUX3
-if [[ $VMACHINE == "1" ]]; then
+if [[ $VMACHINE == "3" ]]; then
 echo && echo " Setting The Network Plan"
 echo && echo " Select the Interface for [WAN] "
 echo
