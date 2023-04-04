@@ -1,10 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.25
-echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
-echo " MultiBalance VPN version"
-echo
-
+versionrr=1.26
 # ROOT CONDITIONS
 function isRoot() {
         if [ "$EUID" -ne 0 ]; then
@@ -16,8 +12,6 @@ if ! isRoot; then
         echo "Sorry, you need to run this as root"
         exit 1
 fi
-
-echo
 echo "CHECKING REQUIRED APPS" 
 echo
 # check if DHCPD is installed
@@ -59,6 +53,10 @@ apt-get install -y net-tools
 else
 echo " Networking Tools =       OK"
 fi
+sleep 2
+clear
+echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
+echo " MultiBalance VPN version"
 echo
 echo "####################################################################### $versionrr #######"
 echo
