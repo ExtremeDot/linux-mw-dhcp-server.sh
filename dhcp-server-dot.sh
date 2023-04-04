@@ -292,8 +292,9 @@ EOF
 ##### WAN SELECT - LINUX1
 if [[ $VMACHINE == "1" ]]; then
 echo && echo " Setting The Network Plan"
-echo && echo " Select the Interface for [WAN] "
-echo
+echo "--------------------------------------"
+echo " Select the Interface for [WAN] "
+echo "--Current Networks"
 ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev 'lo'
 echo && echo
 
@@ -336,7 +337,7 @@ fi
 
 ##### WAN SELECT - DEFAULT
 if [[ $VMACHINE == "4" ]]; then
-
+echo "--------------------------------------"
 echo && echo " Setting The Network Plan"
 echo && echo " Select the Interface for [WAN] "
 echo
@@ -598,7 +599,8 @@ sleep 2
 
 EOF
 ########################
-
+echo "--------------------------------------"
+echo
 sleep 2
 chmod +x /ExtremeDOT/dhcp_route.sh
 echo "/ExtremeDOT/dhcp_route.sh is saved to manual route"
