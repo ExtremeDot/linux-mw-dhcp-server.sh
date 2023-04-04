@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
-echo " Version 1.19"
+echo " Version 1.20"
 echo " MultiBalance VPN version"
 echo
 
