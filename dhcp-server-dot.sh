@@ -2,7 +2,7 @@
 clear
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
 echo " Version 1.19"
-echo "MultiBalance VPN version"
+echo " MultiBalance VPN version"
 echo
 
 # ROOT CONDITIONS
@@ -59,8 +59,9 @@ apt-get install -y net-tools
 else
 echo " Networking Tools =       OK"
 fi
-
-##############################
+echo
+echo "######################################################################################"
+echo
 echo "check https://github.com/ExtremeDot/MultiBalance_VPN webpage and select your machine"
 echo
         echo "Which VM Linux machine you are running? "
@@ -570,9 +571,9 @@ sleep 3
 
 VPNNETNAME=$VPNIPINTERFACE
 VPN_TABLE=900
-VPNIP=`ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'`   #10.66.66.13
-VPNIP_GW=$(echo "${VPNIP}" | cut -d"." -f1-3)".1"             #10.66.66.1
-VPNIP_NETWORK=$(echo "${VPNIP}" | cut -d"." -f1-3)".0/24"     #10.66.66.0/24
+VPNIP=`ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'`
+VPNIP_GW=$(echo "$VPNIP" | cut -d"." -f1-3)".1"
+VPNIP_NETWORK=$(echo "$VPNIP" | cut -d"." -f1-3)".0/24"
 BRIDGE_NAME=$BRG_NAME
 BRIDGE_NETWORK="$DHCP_IPV4_GW/24"
 
