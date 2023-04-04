@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
+versionrr=1.22
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
-echo " Version 1.21"
 echo " MultiBalance VPN version"
 echo
 
@@ -60,7 +60,7 @@ else
 echo " Networking Tools =       OK"
 fi
 echo
-echo "######################################################################################"
+echo "####################################################################### $versionrr #######"
 echo
 echo "check https://github.com/ExtremeDot/MultiBalance_VPN webpage and select your machine"
 echo
