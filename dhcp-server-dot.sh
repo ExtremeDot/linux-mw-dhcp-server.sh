@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
-echo
+echo " Version 1.19"
 echo "MultiBalance VPN version"
 echo
 
@@ -70,6 +70,7 @@ echo
         echo "   4) Default Installation"
         until [[ $VMACHINE =~ ^[0-9]+$ ]] && [ "$VMACHINE" -ge 1 ] && [ "$VMACHINE" -le 4 ]; do
                 read -rp "VMACHINE [1-4]: " -e -i 1 VMACHINE
+	done
                
 
 
@@ -93,7 +94,7 @@ done
 fi
 
 #### LINUX 2 #######
-if [[ $VMACHINE == "1" ]]; then
+if [[ $VMACHINE == "2" ]]; then
 echo " Linux 2 has selected"
 echo
 BRG_NAME="bridge1"
@@ -111,7 +112,7 @@ done
 fi
 
 #### LINUX 3 #######
-if [[ $VMACHINE == "1" ]]; then
+if [[ $VMACHINE == "3" ]]; then
 echo " Linux 3 has selected"
 echo
 BRG_NAME="bridge1"
@@ -366,7 +367,7 @@ cat <<EOF >> /etc/netplan/88-extremedot.yaml
 # WAN INTERFACE
   $WAN_NIC:
    addresses:
- - ${WANIPSTATIC}/24
+    - ${WANIPSTATIC}/24
    dhcp4: no
    routes:
     - to: default
@@ -377,7 +378,6 @@ cat <<EOF >> /etc/netplan/88-extremedot.yaml
    routing-policy:
     - from: $WANIPSTATIC_ZERO/24
       table: 101
-	     
 EOF
 
 fi
@@ -403,7 +403,6 @@ LAN1NETWORK="10.41.40.1/24"
 fi
 
 cat <<EOF >> /etc/netplan/88-extremedot.yaml
-
 # LAN1 INTERFACE
   $LAN1_NIC:
    dhcp4: no
