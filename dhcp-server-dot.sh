@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.28
+versionrr=1.29
 #Debian tets
 # ROOT CONDITIONS
 function isRoot() {
@@ -297,6 +297,8 @@ EOF
 
 ##### WAN SELECT - LINUX1
 if [[ $VMACHINE == "1" ]]; then
+LAN1_NIC=ens34
+LAN1NETWORK="172.162.101.1/24"
 echo && echo " Setting The Network Plan"
 echo "--------------------------------------"
 echo " Select the Interface for [WAN] "
@@ -313,6 +315,8 @@ fi
 
 ##### WAN SELECT - LINUX2
 if [[ $VMACHINE == "2" ]]; then
+LAN1_NIC=ens34
+LAN1NETWORK="172.162.102.1/24"
 
 echo && echo " Setting The Network Plan"
 echo && echo " Select the Interface for [WAN] "
@@ -328,6 +332,9 @@ fi
 
 ##### WAN SELECT - LINUX3
 if [[ $VMACHINE == "3" ]]; then
+LAN1_NIC=ens34
+LAN1NETWORK="172.162.103.1/24"
+
 echo && echo " Setting The Network Plan"
 echo && echo " Select the Interface for [WAN] "
 echo
@@ -400,12 +407,6 @@ SERVER_NIC="$(ifconfig | grep flags | awk '{print $1}' | sed 's/:$//' | grep -Ev
                 read -rp "[LAN1 INTERFACE]: Enter interface name: " -e -i "${SERVER_NIC}" LAN1_NIC
         done
 LAN1NETWORK="10.41.40.1/24"
-
-else
-
-LAN1_NIC=ens34
-LAN1NETWORK="10.41.40.1/24"
-
 fi
 
 cat <<EOF >> /etc/netplan/88-extremedot.yaml
