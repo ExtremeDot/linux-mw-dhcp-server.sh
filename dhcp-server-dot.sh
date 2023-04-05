@@ -570,9 +570,11 @@ fi
 cat <<EOF > /ExtremeDOT/dhcp_route.sh
 #!/bin/bash
 sleep 15
+echo "1" > /proc/sys/net/ipv4/ip_forward
 sysctl -w net.ipv4.ip_forward=1
 sysctl -p
 /usr/bin/systemctl start iptables
+
 sleep 3
 
 VPNNETNAME=$VPNIPINTERFACE
