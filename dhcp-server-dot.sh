@@ -564,6 +564,7 @@ fi
 
 cat <<EOF > /ExtremeDOT/dhcp_route.sh
 #!/bin/bash
+sleep 15
 sysctl -w net.ipv4.ip_forward=1
 sysctl -p
 /usr/bin/systemctl start iptables
