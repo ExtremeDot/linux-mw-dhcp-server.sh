@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.29
+versionrr=1.30
 #Debian tets
 # ROOT CONDITIONS
 function isRoot() {
@@ -385,12 +385,6 @@ cat <<EOF >> /etc/netplan/88-extremedot.yaml
    routes:
     - to: 0.0.0.0/0
       via: $WANIPSTATIC_GW
-    - to: $WANIPSTATIC_ZERO/24
-      via: $WANIPSTATIC_GW
-      table: 101
-   routing-policy:
-    - from: $WANIPSTATIC_ZERO/24
-      table: 101
 EOF
 
 fi
