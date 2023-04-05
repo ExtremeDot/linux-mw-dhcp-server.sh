@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.27
+versionrr=1.28
 #Debian tets
 # ROOT CONDITIONS
 function isRoot() {
@@ -54,6 +54,11 @@ apt-get install -y net-tools
 else
 echo " Networking Tools =       OK"
 fi
+
+echo "removing all network configs"
+
+mkdir -p /etc/netplanbackup
+mv /etc/netplan/* /etc/netplanbackup
 sleep 2
 clear
 echo " EXTREME DOT - DHCP SERVER on NIC [UBUNTU]"
