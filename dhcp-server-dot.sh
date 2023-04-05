@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-versionrr=1.26
+versionrr=1.27
 # ROOT CONDITIONS
 function isRoot() {
         if [ "$EUID" -ne 0 ]; then
@@ -370,7 +370,7 @@ cat <<EOF >> /etc/netplan/88-extremedot.yaml
     - ${WANIPSTATIC}/24
    dhcp4: no
    routes:
-    - to: default
+    - to: 0.0.0.0/0
       via: $WANIPSTATIC_GW
     - to: $WANIPSTATIC_ZERO/24
       via: $WANIPSTATIC_GW
@@ -606,4 +606,4 @@ chmod +x /ExtremeDOT/dhcp_route.sh
 echo "/ExtremeDOT/dhcp_route.sh is saved to manual route"
 
 echo " Add routing to Startup"
-crontab -l | { cat; echo "@reboot sleep 10 && sudo bash /ExtremeDOT/dhcp_route.sh" ; } | crontab -
+crontab -l | { cat; echo "@reboot bash /ExtremeDOT/dhcp_route.sh" ; } | crontab -
