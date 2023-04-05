@@ -572,6 +572,7 @@ sleep 3
 
 VPNNETNAME=$VPNIPINTERFACE
 VPN_TABLE=900
+DEF_TABLE=900
 VPNIP=`ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'`
 sleep 1
 VPNIP_GW=$(echo `ifconfig $VPNIPINTERFACE | awk '/inet / {print $2}'` | cut -d "." -f1-3).1
