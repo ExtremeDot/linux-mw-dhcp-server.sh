@@ -1,6 +1,7 @@
 #!/bin/bash
 clear
 versionrr=1.27
+#Debian tets
 # ROOT CONDITIONS
 function isRoot() {
         if [ "$EUID" -ne 0 ]; then
